@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .modal{
+        padding: 20px;
+        box-shadow: 0px 3px 15px gray;
+        width: 30%;
+        background-color: white;
+        position: fixed;
+        top: 0%;
+        left: 55%;
+        display: none;
+    }
+</style>
+<body>
+    <h1>Welcome admin</h1>
+
+    <label>cloud_pct:<input type="text" name="cloud_pct" id="cloud_pct"></label><br><br>
+    <label>feels_link :<input type="text" name="feels_like" id="feels_like"></label><br><br>
+    <label>humidity : <input type="text" name="humidity" id="humidity"></label><br><br>
+    <label>max_temp : <input type="number" name="max_temp" id="max_temp"></label><br><br>
+    <label>min_temp : <input type="number" name="min_temp" id="min_temp"></label><br><br>
+    <label>sunrise: <input type="text" name="sunrise" id="sunrise"></label><br><br>
+    <label>sunset : <input type="number" name="sunset" id="sunset"></label><br><br>
+    <label>temp : <input type="number" name="temp" id="temp"></label><br><br>
+    <label>wind_degrees : <input type="number" name="wind_degrees" id="wind_degrees"></label><br><br>
+    <label>wind_speed: <input type="text" id="wind_speed"></label><br><br>
+      <button onclick="add()">Add</button>
+    <br><br>
+
+    <table border="1" cellpadding="10" cellspacing="1">
+        <thead>
+            <tr>
+                <th>cloud_pct</th>
+                <th>feels_link</th>
+                <th>humidity</th> 
+                <th>max_temp</th> 
+                <th>min_temp</th> 
+                <th>sunrise</th> 
+                <th>sunset</th>
+                <th>temp</th>
+                <th>wind_degrees</th>
+                <th>wind_speed</th>
+                <th>delete</th>
+                <th>view</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+    <br><br>
+    <!-- <div class="modal" id="mymodal">
+        <button onclick="closedata()" id="close">close</button>
+        <br>
+        <label>image<input type="text" name="image" id="imagee"></label><br><br>
+        <label>product<input type="text" name="name" id="namee"></label> <br><br>
+        <label>des<input type="text" name="desc" id="descc"></label> <br><br>
+        <label>rating<input type="number" name="rating" id="ratting"></label> <br><br>
+        <label>bought<input type="number" name="bought" id="boughtt"></label> <br><br>
+        <label>deals<input type="text" name="deals" id="deal"></label> <br><br>
+        <label>price<input type="number" name="price" id="pricee"><br><br></label>
+        <label>MRP<input type="number" name="MRP" id="mrp"><br><br></label>
+        <label>discount<input type="number" name="discount" id="discunt"><br><br></label>
+        <label>avilable<input type="text" name="avilabel" id="avil"><br><br></label>
+        <input type="hidden" id="index">
+        <button onclick="save()">save</button>
+       
+    </div> -->
+    <script>
+        let product = JSON.parse(localStorage.getItem("product")) || [];
+        let add = () => {
+            let products = {
+                cloud_pct: document.getElementById("cloud_pct").value,
+                feels_like: document.getElementById("feels_like").value,
+                humidity: document.getElementById("humidity").value,
+                max_temp: document.getElementById("max_temp").value,
+                min_temp: document.getElementById("min_temp").value,
+               sunrise: document.getElementById("sunrise").value,
+               sunset: document.getElementById("sunset").value,
+                temp: document.getElementById("temp").value,
+                wind_degrees: document.getElementById("wind_degrees").value,
+                wind_speed: document.getElementById("wind_speed").value,
+            }
+            product.push(products);
+
+            localStorage.setItem("product", JSON.stringify(product));
+            location.reload()
+        }
+        let loaddata = () => {
+            let tbody = document.getElementById("tbody");
+            product.map((val, ind) => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `<td>${val.cloud_pct}</td>
+                                 <td>${val.feels_like}</td>
+                                <td>${val.humidity}</td> 
+                                <td>${val.max_temp}</td>
+                                <td>${val.min_temp}</td> 
+                                <td>${val.sunrise}</td> 
+                                <td>${val.sunset}</td>
+                                <td>${val.temp}</td>
+                                <td>${val.wind_degrees}</td>
+                                <td>${val.wind_speed}</td>
+                                <td><button onclick="delet(${ind})">delete</button></td>
+                                <td><button onclick="view(${ind})">view</button></td>`
+                tbody.appendChild(tr)
+            })
+        }
+        loaddata()
+
+        let delet = (ind) => {
+            let products = product[ind]
+            let res = product.filter((val) => val.name != products.name)
+            console.log(res);
+            localStorage.setItem("product", JSON.stringify(res));
+            location.reload();
+        }
+        // let view = (ind) => {
+        //     let modal=document.getElementById("mymodal")
+        //     modal.style.display="block"
+
+        //     let products=product[ind]
+        //     document.getElementById("cloud_pctt").value=products.Image;
+        //     document.getElementById("feels_likee").value=products.name;
+        //     document.getElementById("humidityy").value=products.des;
+        //     document.getElementById("max_tempp").value=products.rating;
+        //     document.getElementById("min_tempp").value=products.bought;
+        //     document.getElementById("sunrisee").value=products.deals;
+        //     document.getElementById("sunsett").value=products.price;
+        //     document.getElementById("tempp").value=products.MRP;
+        //     document.getElementById("wind_degreess").value=products.discount;
+        //     document.getElementById("wind_speedd").value=products.avilabel;
+        //     document.getElementById("index").value=ind;
+        // }
+        // let save=()=>{
+            let index=document.getElementById("index").value;
+            let products={
+                Image:document.getElementById("imagee").value,
+                name:document.getElementById("namee").value,
+                des:document.getElementById("descc").value,
+                rating:document.getElementById("ratting").value,
+                bought:document.getElementById("boughtt").value,
+                deals:document.getElementById("deal").value,
+                price: document.getElementById("pricee").value,
+                MRP: document.getElementById("mrp").value,
+                discount: document.getElementById("discunt").value,
+                avilabel: document.getElementById("avil").value,
+            }
+            console.log(products);
+
+            product.splice(index,1,products)
+            localStorage.setItem("product",JSON.stringify(product))
+            location.reload()
+        // }
+        let closedata=()=>{
+            let modal=document.getElementById("mymodal")
+            modal.style.display="none"
+        }
+    </script>
+</body>
+
+</html>
